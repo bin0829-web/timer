@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>計時器測試</title>
+<title>困難拉圖斯計時</title>
 
 <style>
 
@@ -11,6 +11,10 @@ background:#0b0f1a;
 color:white;
 font-family:sans-serif;
 text-align:center;
+}
+
+h2{
+margin-top:30px;
 }
 
 .container{
@@ -65,7 +69,7 @@ font-size:16px;
 
 <body>
 
-<h2>計時器測試</h2>
+<h2>困難拉圖斯計時</h2>
 
 <div class="container">
 
@@ -73,9 +77,7 @@ font-size:16px;
 <div class="timer">
 <svg width="140" height="140">
 <circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c0" class="progress" cx="70" cy="70" r="60"
-stroke-dasharray="377"
-stroke-dashoffset="0"/>
+<circle id="c0" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
 </svg>
 <div id="t0" class="time">10</div>
 </div>
@@ -86,9 +88,7 @@ stroke-dashoffset="0"/>
 <div class="timer">
 <svg width="140" height="140">
 <circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c1" class="progress" cx="70" cy="70" r="60"
-stroke-dasharray="377"
-stroke-dashoffset="0"/>
+<circle id="c1" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
 </svg>
 <div id="t1" class="time">70</div>
 </div>
@@ -99,9 +99,7 @@ stroke-dashoffset="0"/>
 <div class="timer">
 <svg width="140" height="140">
 <circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c2" class="progress" cx="70" cy="70" r="60"
-stroke-dasharray="377"
-stroke-dashoffset="0"/>
+<circle id="c2" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
 </svg>
 <div id="t2" class="time">30</div>
 </div>
@@ -112,24 +110,34 @@ stroke-dashoffset="0"/>
 <div class="timer">
 <svg width="140" height="140">
 <circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c3" class="progress" cx="70" cy="70" r="60"
-stroke-dasharray="377"
-stroke-dashoffset="0"/>
+<circle id="c3" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
 </svg>
 <div id="t3" class="time">50</div>
 </div>
 <div class="label">小怪</div>
 </div>
 
+<div onclick="toggleTimer(4)">
+<div class="timer">
+<svg width="140" height="140">
+<circle class="bg" cx="70" cy="70" r="60"/>
+<circle id="c4" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
+</svg>
+<div id="t4" class="time">120</div>
+</div>
+<div class="label">反盾</div>
+</div>
+
 </div>
 
 <script>
 
-const timers = [
+const timers=[
 {max:10,time:10,run:false},
 {max:70,time:70,run:false},
 {max:30,time:30,run:false},
-{max:50,time:50,run:false}
+{max:50,time:50,run:false},
+{max:120,time:120,run:false}
 ]
 
 function toggleTimer(i){
