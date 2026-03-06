@@ -50,8 +50,7 @@ body{
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:10px 12px calc(22px + env(safe-area-inset-bottom));
-  position:relative;
+  padding:8px 12px 10px;
 }
 
 h1{
@@ -90,8 +89,7 @@ button.primary{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  gap:18px;
-  padding-bottom:74px;
+  gap:12px;
 }
 
 .row{
@@ -128,14 +126,14 @@ button.primary{
 
 .timer{
   position:relative;
-  width:158px;
-  height:158px;
+  width:146px;
+  height:146px;
   margin:0 auto;
 }
 
 svg{
-  width:158px;
-  height:158px;
+  width:146px;
+  height:146px;
   display:block;
   transform:rotate(-90deg);
 }
@@ -178,23 +176,16 @@ circle{
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:34px;
+  font-size:32px;
   font-weight:800;
   line-height:1;
 }
 
 .label{
-  margin-top:8px;
-  font-size:16px;
+  margin-top:6px;
+  font-size:14px;
   line-height:1.2;
   white-space:nowrap;
-}
-
-.hint{
-  margin-top:6px;
-  font-size:11px;
-  color:rgba(255,255,255,.55);
-  line-height:1.3;
 }
 
 .red .progress{
@@ -219,20 +210,19 @@ circle{
   50%{ color:#ffd6d6; opacity:.55; }
 }
 
-/* 浮貼式 84% */
-.fab84-wrap{
-  position:absolute;
-  left:50%;
-  bottom:calc(12px + env(safe-area-inset-bottom));
-  transform:translateX(-50%);
-  z-index:20;
-  pointer-events:none;
+/* 84% 下方浮貼感按鈕 */
+.fab84-row{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-top:-4px;
 }
 
 .fab84-rail{
   position:relative;
-  min-width:220px;
-  height:56px;
+  min-width:260px;
+  height:52px;
   padding:0 18px;
   border-radius:999px;
   background:linear-gradient(90deg, rgba(47,124,246,.15), rgba(87,165,255,.28), rgba(47,124,246,.15));
@@ -243,14 +233,13 @@ circle{
 }
 
 .fab84{
-  pointer-events:auto;
-  min-width:140px;
-  height:56px;
+  min-width:138px;
+  height:52px;
   padding:0 28px;
   border-radius:999px;
   background:linear-gradient(180deg, #4b93ff, #2f7cf6);
   color:#fff;
-  font-size:20px;
+  font-size:18px;
   font-weight:800;
   box-shadow:0 10px 24px rgba(47,124,246,.35);
 }
@@ -260,7 +249,7 @@ circle{
 }
 
 .fab84-side{
-  position:absolute;
+  position: absolute;
   width:18px;
   height:18px;
   border-radius:50%;
@@ -274,82 +263,22 @@ circle{
 .fab84-side.left{ left:16px; }
 .fab84-side.right{ right:16px; }
 
-@media (orientation: landscape){
-  .page{
-    padding:8px 14px calc(18px + env(safe-area-inset-bottom));
-  }
-
-  h1{
-    margin:2px 0 6px;
-    font-size:20px;
-  }
-
-  .top-controls{
-    margin-bottom:6px;
-  }
-
-  button{
-    padding:9px 18px;
-    font-size:14px;
-  }
-
-  .layout{
-    gap:12px;
-    padding-bottom:68px;
-  }
-
-  .row.top{
-    width:min(72vw, 720px);
-  }
-
-  .row.bottom{
-    width:min(100vw, 1100px);
-  }
-
-  .timer{
-    width:146px;
-    height:146px;
-  }
-
-  svg{
-    width:146px;
-    height:146px;
-  }
-
-  .time{
-    font-size:32px;
-  }
-
-  .label{
-    margin-top:6px;
-    font-size:14px;
-  }
-
-  .hint{
-    font-size:10px;
-  }
-
-  .fab84-rail{
-    min-width:260px;
-    height:52px;
-  }
-
-  .fab84{
-    min-width:138px;
-    height:52px;
-    font-size:18px;
-  }
+.hint{
+  margin-top:2px;
+  font-size:10px;
+  color:rgba(255,255,255,.55);
+  line-height:1.3;
 }
 
 @media (orientation: portrait){
   .timer{
-    width:128px;
-    height:128px;
+    width:124px;
+    height:124px;
   }
 
   svg{
-    width:128px;
-    height:128px;
+    width:124px;
+    height:124px;
   }
 
   .time{
@@ -363,13 +292,13 @@ circle{
 
   .fab84-rail{
     min-width:220px;
-    height:54px;
+    height:50px;
   }
 
   .fab84{
-    min-width:132px;
-    height:54px;
-    font-size:19px;
+    min-width:128px;
+    height:50px;
+    font-size:18px;
   }
 }
 </style>
@@ -465,17 +394,17 @@ circle{
       </div>
     </div>
 
-    <div class="hint">點一下：開始 / 暫停　　長壓 2 秒：個別重置</div>
-  </div>
-
-  <div class="fab84-wrap">
-    <div class="fab84-rail">
-      <span class="fab84-side left"></span>
-      <button class="fab84" onclick="toggle84()">84%</button>
-      <span class="fab84-side right"></span>
+    <div class="fab84-row">
+      <div class="fab84-rail">
+        <span class="fab84-side left"></span>
+        <button class="fab84" onclick="toggle84()">84%</button>
+        <span class="fab84-side right"></span>
+      </div>
     </div>
-  </div>
 
+    <div class="hint">點一下：開始 / 暫停　　長壓 2 秒：個別重置</div>
+
+  </div>
 </div>
 
 <script>
@@ -610,21 +539,10 @@ function cancelPress(i){
 document.querySelectorAll(".timer-box").forEach(el => {
   const i = Number(el.dataset.index);
 
-  el.addEventListener("pointerdown", () => {
-    startPress(i);
-  });
-
-  el.addEventListener("pointerup", () => {
-    finishPress(i);
-  });
-
-  el.addEventListener("pointercancel", () => {
-    cancelPress(i);
-  });
-
-  el.addEventListener("pointerleave", () => {
-    cancelPress(i);
-  });
+  el.addEventListener("pointerdown", () => startPress(i));
+  el.addEventListener("pointerup", () => finishPress(i));
+  el.addEventListener("pointercancel", () => cancelPress(i));
+  el.addEventListener("pointerleave", () => cancelPress(i));
 });
 
 setInterval(() => {
