@@ -105,13 +105,13 @@ button.primary{
 
 .row.top{
   grid-template-columns:1fr 1fr;
-  width:min(72vw, 720px);
+  width:min(76vw, 780px);
   margin:0 auto;
 }
 
 .row.bottom{
   grid-template-columns:1fr 1fr 1fr;
-  width:min(100vw, 1100px);
+  width:min(96vw, 1080px);
   margin:0 auto;
 }
 
@@ -128,16 +128,17 @@ button.primary{
   touch-action:manipulation;
 }
 
+/* 預設：下排尺寸 */
 .timer{
   position:relative;
-  width:146px;
-  height:146px;
+  width:118px;
+  height:118px;
   margin:0 auto;
 }
 
 svg{
-  width:146px;
-  height:146px;
+  width:118px;
+  height:118px;
   display:block;
   transform:rotate(-90deg);
 }
@@ -175,14 +176,29 @@ circle{
   transition:stroke-dashoffset 1s linear, stroke .2s linear;
 }
 
+/* 上排放大 */
+.item.top-big .timer{
+  width:146px;
+  height:146px;
+}
+
+.item.top-big svg{
+  width:146px;
+  height:146px;
+}
+
 .time{
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:32px;
   font-weight:800;
   line-height:1;
+  font-size:26px;
+}
+
+.item.top-big .time{
+  font-size:32px;
 }
 
 .label{
@@ -190,6 +206,10 @@ circle{
   font-size:14px;
   line-height:1.2;
   white-space:nowrap;
+}
+
+.item.top-big .label{
+  font-size:15px;
 }
 
 .red .progress{
@@ -214,7 +234,7 @@ circle{
   50%{ color:#ffd6d6; opacity:.55; }
 }
 
-/* 直向：84%獨立一列 */
+/* 84% */
 .fab84-row{
   width:100%;
   display:flex;
@@ -226,8 +246,8 @@ circle{
 
 .fab84-rail{
   position:relative;
-  min-width:260px;
-  height:52px;
+  min-width:220px;
+  height:46px;
   padding:0 18px;
   border-radius:999px;
   background:linear-gradient(90deg, rgba(47,124,246,.15), rgba(87,165,255,.28), rgba(47,124,246,.15));
@@ -238,13 +258,13 @@ circle{
 }
 
 .fab84{
-  min-width:138px;
-  height:52px;
+  min-width:122px;
+  height:46px;
   padding:0 28px;
   border-radius:999px;
   background:linear-gradient(180deg, #4b93ff, #2f7cf6);
   color:#fff;
-  font-size:18px;
+  font-size:17px;
   font-weight:800;
   box-shadow:0 10px 24px rgba(47,124,246,.35);
 }
@@ -255,8 +275,8 @@ circle{
 
 .fab84-side{
   position:absolute;
-  width:18px;
-  height:18px;
+  width:16px;
+  height:16px;
   border-radius:50%;
   background:#ffd34d;
   box-shadow:0 0 12px rgba(255,211,77,.5);
@@ -276,7 +296,7 @@ circle{
   flex:0 0 auto;
 }
 
-/* 橫置專用：縮小計時器並把84%固定在底部 */
+/* 橫置：上排再盡量放大，但不擠壓下排 */
 @media (orientation: landscape){
   .page{
     padding:6px 10px calc(10px + env(safe-area-inset-bottom));
@@ -298,34 +318,52 @@ circle{
 
   .layout{
     gap:8px;
-    padding-bottom:68px; /* 留給底部84% */
+    padding-bottom:64px;
   }
 
   .row.top{
-    width:min(64vw, 620px);
+    width:min(78vw, 860px);
   }
 
   .row.bottom{
-    width:min(96vw, 980px);
+    width:min(96vw, 1080px);
   }
 
   .timer{
-    width:118px;
-    height:118px;
+    width:112px;
+    height:112px;
   }
 
   svg{
-    width:118px;
-    height:118px;
+    width:112px;
+    height:112px;
   }
 
   .time{
-    font-size:26px;
+    font-size:25px;
+  }
+
+  .item.top-big .timer{
+    width:154px;
+    height:154px;
+  }
+
+  .item.top-big svg{
+    width:154px;
+    height:154px;
+  }
+
+  .item.top-big .time{
+    font-size:34px;
   }
 
   .label{
     margin-top:4px;
     font-size:12px;
+  }
+
+  .item.top-big .label{
+    font-size:14px;
   }
 
   .fab84-row{
@@ -337,56 +375,43 @@ circle{
     z-index:20;
   }
 
-  .fab84-rail{
-    min-width:220px;
-    height:46px;
-  }
-
-  .fab84{
-    min-width:122px;
-    height:46px;
-    font-size:17px;
-  }
-
-  .fab84-side{
-    width:16px;
-    height:16px;
-  }
-
   .hint{
     display:none;
   }
 }
 
 @media (orientation: portrait){
-  .timer{
-    width:124px;
-    height:124px;
-  }
-
-  svg{
-    width:124px;
-    height:124px;
-  }
-
-  .time{
-    font-size:28px;
-  }
-
   .row.top,
   .row.bottom{
     width:100%;
   }
 
-  .fab84-rail{
-    min-width:220px;
-    height:50px;
+  .timer{
+    width:116px;
+    height:116px;
   }
 
-  .fab84{
-    min-width:128px;
-    height:50px;
-    font-size:18px;
+  svg{
+    width:116px;
+    height:116px;
+  }
+
+  .time{
+    font-size:26px;
+  }
+
+  .item.top-big .timer{
+    width:132px;
+    height:132px;
+  }
+
+  .item.top-big svg{
+    width:132px;
+    height:132px;
+  }
+
+  .item.top-big .time{
+    font-size:30px;
   }
 }
 </style>
@@ -404,7 +429,7 @@ circle{
   <div class="layout">
 
     <div class="row top">
-      <div class="item">
+      <div class="item top-big">
         <div class="timer-box" data-index="0">
           <div class="timer" id="wrap0">
             <svg viewBox="0 0 100 100">
@@ -419,7 +444,7 @@ circle{
         </div>
       </div>
 
-      <div class="item">
+      <div class="item top-big">
         <div class="timer-box" data-index="4">
           <div class="timer" id="wrap4">
             <svg viewBox="0 0 100 100">
