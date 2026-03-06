@@ -1,23 +1,23 @@
 {
-  "name": "70秒計時器",
-  "short_name": "70秒計時器",
+  "name": "困難拉圖斯計時",
+  "short_name": "困難拉圖斯",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b0f1a",
-  "theme_color": "#0b0f1a",
+  "background_color": "#061226",
+  "theme_color": "#061226",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "rat-icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "rat-icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "icon-180.png",
+      "src": "rat-icon-180.png",
       "sizes": "180x180",
       "type": "image/png"
     }
