@@ -2,44 +2,164 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>70秒計時器</title>
+<title>計時器測試</title>
+
 <style>
+
 body{
-font-family:sans-serif;
-text-align:center;
 background:#0b0f1a;
 color:white;
-padding-top:120px;
+font-family:sans-serif;
+text-align:center;
 }
-#time{
-font-size:80px;
+
+.container{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:40px;
+padding:40px;
 }
-button{
-font-size:30px;
-padding:20px 40px;
-margin-top:40px;
+
+.timer{
+position:relative;
+width:140px;
+height:140px;
+margin:auto;
 }
+
+svg{
+transform:rotate(-90deg);
+}
+
+circle{
+fill:none;
+stroke-width:10;
+}
+
+.bg{
+stroke:#333;
+}
+
+.progress{
+stroke:#4da3ff;
+stroke-linecap:round;
+transition:stroke-dashoffset 1s linear;
+}
+
+.time{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:28px;
+font-weight:bold;
+}
+
+.label{
+margin-top:10px;
+font-size:16px;
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>70秒倒數</h1>
+<h2>計時器測試</h2>
 
-<div id="time">70</div>
+<div class="container">
 
-<button onclick="start()">開始</button>
+<div onclick="toggleTimer(0)">
+<div class="timer">
+<svg width="140" height="140">
+<circle class="bg" cx="70" cy="70" r="60"/>
+<circle id="c0" class="progress" cx="70" cy="70" r="60"
+stroke-dasharray="377"
+stroke-dashoffset="0"/>
+</svg>
+<div id="t0" class="time">10</div>
+</div>
+<div class="label">時鐘</div>
+</div>
+
+<div onclick="toggleTimer(1)">
+<div class="timer">
+<svg width="140" height="140">
+<circle class="bg" cx="70" cy="70" r="60"/>
+<circle id="c1" class="progress" cx="70" cy="70" r="60"
+stroke-dasharray="377"
+stroke-dashoffset="0"/>
+</svg>
+<div id="t1" class="time">70</div>
+</div>
+<div class="label">黑水</div>
+</div>
+
+<div onclick="toggleTimer(2)">
+<div class="timer">
+<svg width="140" height="140">
+<circle class="bg" cx="70" cy="70" r="60"/>
+<circle id="c2" class="progress" cx="70" cy="70" r="60"
+stroke-dasharray="377"
+stroke-dashoffset="0"/>
+</svg>
+<div id="t2" class="time">30</div>
+</div>
+<div class="label">玩家炸彈</div>
+</div>
+
+<div onclick="toggleTimer(3)">
+<div class="timer">
+<svg width="140" height="140">
+<circle class="bg" cx="70" cy="70" r="60"/>
+<circle id="c3" class="progress" cx="70" cy="70" r="60"
+stroke-dasharray="377"
+stroke-dashoffset="0"/>
+</svg>
+<div id="t3" class="time">50</div>
+</div>
+<div class="label">小怪</div>
+</div>
+
+</div>
 
 <script>
-let t=70
 
-function start(){
-setInterval(()=>{
-t--
-if(t<=0){t=70}
-document.getElementById("time").innerText=t
-},1000)
+const timers = [
+{max:10,time:10,run:false},
+{max:70,time:70,run:false},
+{max:30,time:30,run:false},
+{max:50,time:50,run:false}
+]
+
+function toggleTimer(i){
+timers[i].run=!timers[i].run
 }
+
+setInterval(()=>{
+
+timers.forEach((t,i)=>{
+
+if(!t.run)return
+
+t.time--
+
+if(t.time<=0){
+t.time=t.max
+}
+
+document.getElementById("t"+i).innerText=t.time
+
+let percent=t.time/t.max
+let offset=377*(1-percent)
+
+document.getElementById("c"+i)
+.style.strokeDashoffset=offset
+
+})
+
+},1000)
+
 </script>
 
 </body>
