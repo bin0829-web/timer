@@ -1,47 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>困難拉圖斯計時</title>
 <style>
+:root{
+  --bg:#061226;
+  --text:#ffffff;
+  --blue:#57a5ff;
+  --red:#ff4d4f;
+  --gray:#2f3b4a;
+}
+
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
+
 body{
   margin:0;
-  background:#061226;
-  color:white;
-  font-family:sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Noto Sans TC",sans-serif;
   text-align:center;
 }
 
-h2{
-  margin:18px 0 8px;
+h1{
+  margin:16px 0 10px;
   font-size:24px;
+  font-weight:800;
 }
 
-.container{
+.controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:6px 0 10px;
+  flex-wrap:wrap;
+}
+
+button{
+  border:0;
+  border-radius:999px;
+  padding:10px 18px;
+  font-size:15px;
+  font-weight:700;
+  color:#fff;
+  background:#1f2d3d;
+}
+
+button.primary{
+  background:#2f7cf6;
+}
+
+.layout{
+  padding:6px 10px 20px;
+}
+
+.row{
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px 10px;
-  padding:14px 10px 24px;
+  gap:14px;
   justify-items:center;
+  align-items:start;
+  margin-bottom:18px;
+}
+
+.row.top{
+  grid-template-columns:repeat(2, 1fr);
+}
+
+.row.bottom{
+  grid-template-columns:repeat(3, 1fr);
 }
 
 .item{
   width:100%;
+  max-width:160px;
 }
 
 .timer{
   position:relative;
-  width:110px;
-  height:110px;
-  margin:auto;
+  width:120px;
+  height:120px;
+  margin:0 auto;
 }
 
 svg{
-  width:110px;
-  height:110px;
+  width:120px;
+  height:120px;
   display:block;
   transform:rotate(-90deg);
-  overflow:visible;
 }
 
 circle{
@@ -50,13 +99,13 @@ circle{
 }
 
 .bg{
-  stroke:#2c3440;
+  stroke:var(--gray);
 }
 
 .progress{
-  stroke:#4da3ff;
+  stroke:var(--blue);
   stroke-linecap:round;
-  transition:stroke-dashoffset 1s linear;
+  transition:stroke-dashoffset 1s linear, stroke .2s linear;
 }
 
 .time{
@@ -64,41 +113,67 @@ circle{
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:22px;
-  font-weight:bold;
+  font-size:21px;
+  font-weight:800;
+  min-width:42px;
 }
 
 .label{
-  margin-top:6px;
-  font-size:15px;
+  margin-top:8px;
+  font-size:14px;
+  line-height:1.25;
   white-space:nowrap;
 }
 
-/* 手機橫向 */
+.red .progress{
+  stroke:var(--red);
+}
+
+.flash .progress{
+  animation:ringFlash .8s infinite;
+}
+
+.flash .time{
+  animation:textFlash .8s infinite;
+}
+
+@keyframes ringFlash{
+  0%,100%{ stroke:var(--red); opacity:1; }
+  50%{ stroke:#ffb3b3; opacity:.55; }
+}
+
+@keyframes textFlash{
+  0%,100%{ color:#ff4d4f; opacity:1; }
+  50%{ color:#ffd6d6; opacity:.55; }
+}
+
 @media (orientation: landscape){
-  h2{
-    font-size:18px;
-    margin:10px 0 4px;
+  h1{
+    font-size:21px;
+    margin:10px 0 8px;
   }
 
-  .container{
-    grid-template-columns:repeat(5, minmax(0, 1fr));
-    gap:6px;
-    padding:8px 4px 12px;
+  .controls{
+    margin:4px 0 8px;
+  }
+
+  .row{
+    gap:8px;
+    margin-bottom:10px;
   }
 
   .item{
-    min-width:0;
+    max-width:140px;
   }
 
   .timer{
-    width:72px;
-    height:72px;
+    width:98px;
+    height:98px;
   }
 
   svg{
-    width:72px;
-    height:72px;
+    width:98px;
+    height:98px;
   }
 
   circle{
@@ -106,96 +181,143 @@ circle{
   }
 
   .time{
-    font-size:14px;
+    font-size:18px;
   }
 
   .label{
-    margin-top:4px;
-    font-size:10px;
-    line-height:1.2;
-    white-space:normal;
-    word-break:break-word;
+    font-size:12px;
+    margin-top:6px;
   }
 }
 </style>
 </head>
 <body>
 
-<h2>困難拉圖斯計時</h2>
+<h1>困難拉圖斯計時</h1>
 
-<div class="container">
+<div class="controls">
+  <button class="primary" onclick="toggle84()">84%</button>
+  <button onclick="resetAll()">重置全部</button>
+</div>
 
-  <div class="item" onclick="toggleTimer(0)">
-    <div class="timer">
-      <svg viewBox="0 0 100 100">
-        <circle class="bg" cx="50" cy="50" r="42"/>
-        <circle id="c0" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
-      </svg>
-      <div id="t0" class="time">10</div>
+<div class="layout">
+  <div class="row top">
+    <div class="item" onclick="toggleTimer(0)">
+      <div class="timer" id="wrap0">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c0" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t0" class="time">10</div>
+      </div>
+      <div class="label">時鐘（89%）</div>
     </div>
-    <div class="label">時鐘（89%）</div>
+
+    <div class="item" onclick="toggleTimer(4)">
+      <div class="timer" id="wrap4">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c4" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t4" class="time"></div>
+      </div>
+      <div class="label">黑水（69%）</div>
+    </div>
   </div>
 
-  <div class="item" onclick="toggleTimer(1)">
-    <div class="timer">
-      <svg viewBox="0 0 100 100">
-        <circle class="bg" cx="50" cy="50" r="42"/>
-        <circle id="c1" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
-      </svg>
-      <div id="t1" class="time">50</div>
+  <div class="row bottom">
+    <div class="item" onclick="toggleTimer(1)">
+      <div class="timer" id="wrap1">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c1" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t1" class="time"></div>
+      </div>
+      <div class="label">小怪（84%）</div>
     </div>
-    <div class="label">小怪（84%）</div>
-  </div>
 
-  <div class="item" onclick="toggleTimer(2)">
-    <div class="timer">
-      <svg viewBox="0 0 100 100">
-        <circle class="bg" cx="50" cy="50" r="42"/>
-        <circle id="c2" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
-      </svg>
-      <div id="t2" class="time">30</div>
+    <div class="item" onclick="toggleTimer(2)">
+      <div class="timer" id="wrap2">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c2" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t2" class="time"></div>
+      </div>
+      <div class="label">玩家炸彈（84%）</div>
     </div>
-    <div class="label">玩家炸彈（84%）</div>
-  </div>
 
-  <div class="item" onclick="toggleTimer(3)">
-    <div class="timer">
-      <svg viewBox="0 0 100 100">
-        <circle class="bg" cx="50" cy="50" r="42"/>
-        <circle id="c3" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
-      </svg>
-      <div id="t3" class="time">120</div>
+    <div class="item" onclick="toggleTimer(3)">
+      <div class="timer" id="wrap3">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c3" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t3" class="time"></div>
+      </div>
+      <div class="label">反盾（84%）</div>
     </div>
-    <div class="label">反盾（84%）</div>
   </div>
-
-  <div class="item" onclick="toggleTimer(4)">
-    <div class="timer">
-      <svg viewBox="0 0 100 100">
-        <circle class="bg" cx="50" cy="50" r="42"/>
-        <circle id="c4" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"/>
-      </svg>
-      <div id="t4" class="time">70</div>
-    </div>
-    <div class="label">黑水（69%）</div>
-  </div>
-
 </div>
 
 <script>
 const CIRCUMFERENCE = 264;
 
 const timers = [
-  {max:10,time:10,run:false},
-  {max:50,time:50,run:false},
-  {max:30,time:30,run:false},
-  {max:120,time:120,run:false},
-  {max:70,time:70,run:false}
+  { max:10,  time:10,  run:false, warn:false, showAlways:true  }, // 時鐘
+  { max:50,  time:50,  run:false, warn:true,  showAlways:false }, // 小怪
+  { max:30,  time:30,  run:false, warn:true,  showAlways:false }, // 玩家炸彈
+  { max:120, time:120, run:false, warn:true,  showAlways:false }, // 反盾
+  { max:70,  time:70,  run:false, warn:true,  showAlways:false }  // 黑水
 ];
 
 function toggleTimer(i){
   timers[i].run = !timers[i].run;
+  renderTimer(i);
 }
+
+function toggle84(){
+  const group = [1,2,3];
+  const shouldRun = group.some(i => !timers[i].run);
+  group.forEach(i => {
+    timers[i].run = shouldRun;
+    renderTimer(i);
+  });
+}
+
+function resetAll(){
+  timers.forEach((t,i)=>{
+    t.run = false;
+    t.time = t.max;
+    renderTimer(i);
+  });
+}
+
+function renderTimer(i){
+  const t = timers[i];
+  const percent = t.time / t.max;
+  const offset = CIRCUMFERENCE * (1 - percent);
+
+  document.getElementById("c" + i).style.strokeDashoffset = offset;
+
+  const wrap = document.getElementById("wrap" + i);
+  const text = document.getElementById("t" + i);
+
+  wrap.classList.remove("red", "flash");
+
+  if (t.showAlways) {
+    text.textContent = t.time;
+  } else {
+    text.textContent = t.time <= 20 ? t.time : "";
+  }
+
+  if (t.warn && t.time <= 10 && t.run) {
+    wrap.classList.add("red", "flash");
+  }
+}
+
+timers.forEach((_,i)=>renderTimer(i));
 
 setInterval(()=>{
   timers.forEach((t,i)=>{
@@ -207,13 +329,9 @@ setInterval(()=>{
       t.time = t.max;
     }
 
-    document.getElementById("t"+i).innerText = t.time;
-
-    const percent = t.time / t.max;
-    const offset = CIRCUMFERENCE * (1 - percent);
-    document.getElementById("c"+i).style.strokeDashoffset = offset;
+    renderTimer(i);
   });
-},1000);
+}, 1000);
 </script>
 
 </body>
