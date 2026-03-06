@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>70秒計時器</title>
+<style>
+body{
+font-family:sans-serif;
+text-align:center;
+background:#0b0f1a;
+color:white;
+padding-top:120px;
+}
+#time{
+font-size:80px;
+}
+button{
+font-size:30px;
+padding:20px 40px;
+margin-top:40px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>70秒倒數</h1>
+
+<div id="time">70</div>
+
+<button onclick="start()">開始</button>
+
+<script>
+let t=70
+
+function start(){
+setInterval(()=>{
+t--
+if(t<=0){t=70}
+document.getElementById("time").innerText=t
+},1000)
+}
+</script>
+
+</body>
+</html>
