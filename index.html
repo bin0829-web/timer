@@ -18,11 +18,14 @@
   --blue:#57a5ff;
   --red:#ff4d4f;
   --gray:#2f3b4a;
+  --hold:#ffd166;
 }
 
 *{
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  -webkit-user-select:none;
 }
 
 body{
@@ -67,10 +70,10 @@ button.primary{
 
 .row{
   display:grid;
-  gap:14px;
+  gap:18px;
   justify-items:center;
   align-items:start;
-  margin-bottom:18px;
+  margin-bottom:20px;
 }
 
 .row.top{
@@ -83,19 +86,23 @@ button.primary{
 
 .item{
   width:100%;
-  max-width:160px;
+  max-width:190px;
+}
+
+.timer-box{
+  display:block;
 }
 
 .timer{
   position:relative;
-  width:120px;
-  height:120px;
+  width:138px;
+  height:138px;
   margin:0 auto;
 }
 
 svg{
-  width:120px;
-  height:120px;
+  width:138px;
+  height:138px;
   display:block;
   transform:rotate(-90deg);
 }
@@ -115,22 +122,46 @@ circle{
   transition:stroke-dashoffset 1s linear, stroke .2s linear;
 }
 
+.hold-track{
+  stroke:rgba(255,209,102,.18);
+  stroke-width:4;
+}
+
+.hold-progress{
+  stroke:var(--hold);
+  stroke-width:4;
+  stroke-linecap:round;
+  opacity:0;
+  transition:opacity .15s linear;
+}
+
+.pressing .hold-progress{
+  opacity:1;
+}
+
 .time{
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:21px;
+  font-size:24px;
   font-weight:800;
 }
 
 .label{
-  margin-top:8px;
-  font-size:14px;
+  margin-top:10px;
+  font-size:15px;
 }
 
 .action-under{
-  margin-top:10px;
+  margin-top:12px;
+}
+
+.hint{
+  margin-top:8px;
+  font-size:11px;
+  color:rgba(255,255,255,.55);
+  line-height:1.3;
 }
 
 .red .progress{
@@ -156,22 +187,40 @@ circle{
 }
 
 @media (orientation: landscape){
+  h1{
+    margin:10px 0 8px;
+    font-size:22px;
+  }
+
+  .row{
+    gap:12px;
+    margin-bottom:14px;
+  }
+
+  .item{
+    max-width:180px;
+  }
+
   .timer{
-    width:100px;
-    height:100px;
+    width:122px;
+    height:122px;
   }
 
   svg{
-    width:100px;
-    height:100px;
+    width:122px;
+    height:122px;
   }
 
   .time{
-    font-size:18px;
+    font-size:22px;
   }
 
   .label{
-    font-size:12px;
+    font-size:14px;
+  }
+
+  .hint{
+    font-size:10px;
   }
 }
 </style>
@@ -189,48 +238,61 @@ circle{
 
   <div class="row top">
 
-    <div class="item" onclick="toggleTimer(0)">
-      <div class="timer" id="wrap0">
-        <svg viewBox="0 0 100 100">
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c0" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t0" class="time">10</div>
+    <div class="item">
+      <div class="timer-box" data-index="0">
+        <div class="timer" id="wrap0">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold0" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c0" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t0" class="time">10</div>
+        </div>
+        <div class="label">時鐘（89%）</div>
       </div>
-      <div class="label">時鐘（89%）</div>
     </div>
 
-    <div class="item" onclick="toggleTimer(4)">
-      <div class="timer" id="wrap4">
-        <svg viewBox="0 0 100 100">
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c4" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t4" class="time">70</div>
+    <div class="item">
+      <div class="timer-box" data-index="4">
+        <div class="timer" id="wrap4">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold4" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c4" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t4" class="time">70</div>
+        </div>
+        <div class="label">黑水（69%）</div>
       </div>
-      <div class="label">黑水（69%）</div>
     </div>
 
   </div>
 
   <div class="row bottom">
 
-    <div class="item" onclick="toggleTimer(1)">
-      <div class="timer" id="wrap1">
-        <svg viewBox="0 0 100 100">
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c1" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t1" class="time">50</div>
+    <div class="item">
+      <div class="timer-box" data-index="1">
+        <div class="timer" id="wrap1">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold1" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c1" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t1" class="time">50</div>
+        </div>
+        <div class="label">小怪（84%）</div>
       </div>
-      <div class="label">小怪（84%）</div>
     </div>
 
     <div class="item">
-
-      <div onclick="toggleTimer(2)">
+      <div class="timer-box" data-index="2">
         <div class="timer" id="wrap2">
           <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold2" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
             <circle class="bg" cx="50" cy="50" r="42"></circle>
             <circle id="c2" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
           </svg>
@@ -242,37 +304,52 @@ circle{
       <div class="action-under">
         <button class="primary" onclick="event.stopPropagation(); toggle84()">84%</button>
       </div>
-
     </div>
 
-    <div class="item" onclick="toggleTimer(3)">
-      <div class="timer" id="wrap3">
-        <svg viewBox="0 0 100 100">
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c3" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t3" class="time">120</div>
+    <div class="item">
+      <div class="timer-box" data-index="3">
+        <div class="timer" id="wrap3">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold3" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c3" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t3" class="time">120</div>
+        </div>
+        <div class="label">反盾（84%）</div>
       </div>
-      <div class="label">反盾（84%）</div>
     </div>
 
   </div>
+
+  <div class="hint">點一下：開始 / 暫停　　長壓 2 秒：個別重置</div>
 
 </div>
 
 <script>
 const CIRCUMFERENCE = 264;
+const HOLD_CIRCUMFERENCE = 295;
+const LONG_PRESS_MS = 2000;
 
 const timers = [
   { max:10,  time:10,  run:false, warn:false },
-  { max:50,  time:50,  run:false, warn:true },
-  { max:30,  time:30,  run:false, warn:true },
-  { max:120, time:120, run:false, warn:true },
-  { max:70,  time:70,  run:false, warn:true }
+  { max:50,  time:50,  run:false, warn:true  },
+  { max:30,  time:30,  run:false, warn:true  },
+  { max:120, time:120, run:false, warn:true  },
+  { max:70,  time:70,  run:false, warn:true  }
 ];
+
+const pressState = {};
 
 function toggleTimer(i){
   timers[i].run = !timers[i].run;
+}
+
+function resetTimer(i){
+  timers[i].run = false;
+  timers[i].time = timers[i].max;
+  render(i);
 }
 
 function toggle84(){
@@ -282,17 +359,17 @@ function toggle84(){
 }
 
 function resetAll(){
-  timers.forEach((t)=>{
-    t.run=false;
-    t.time=t.max;
+  timers.forEach((t, i)=>{
+    t.run = false;
+    t.time = t.max;
+    render(i);
   });
 }
 
 function render(i){
   const t = timers[i];
-
   const percent = t.time / t.max;
-  const offset = CIRCUMFERENCE * (1-percent);
+  const offset = CIRCUMFERENCE * (1 - percent);
 
   document.getElementById("c"+i).style.strokeDashoffset = offset;
 
@@ -300,7 +377,6 @@ function render(i){
   const text = document.getElementById("t"+i);
 
   wrap.classList.remove("red","flash");
-
   text.innerText = t.time;
 
   if(t.warn && t.time <= 10 && t.run){
@@ -308,25 +384,129 @@ function render(i){
   }
 }
 
+function setHoldProgress(i, ratio){
+  const clamped = Math.max(0, Math.min(1, ratio));
+  const offset = HOLD_CIRCUMFERENCE * (1 - clamped);
+  document.getElementById("hold"+i).style.strokeDashoffset = offset;
+}
+
+function clearHoldProgress(i){
+  setHoldProgress(i, 0);
+}
+
+function startPress(i){
+  clearPress(i);
+
+  const wrap = document.getElementById("wrap"+i);
+  wrap.classList.add("pressing");
+  setHoldProgress(i, 0);
+
+  const startedAt = Date.now();
+
+  const progressTimer = setInterval(()=>{
+    const elapsed = Date.now() - startedAt;
+    setHoldProgress(i, elapsed / LONG_PRESS_MS);
+  }, 16);
+
+  const longTimer = setTimeout(()=>{
+    if (!pressState[i]) return;
+    pressState[i].longPressed = true;
+    clearInterval(progressTimer);
+    setHoldProgress(i, 1);
+    wrap.classList.remove("pressing");
+    resetTimer(i);
+    setTimeout(()=>clearHoldProgress(i), 120);
+  }, LONG_PRESS_MS);
+
+  pressState[i] = {
+    longPressed:false,
+    progressTimer,
+    longTimer
+  };
+}
+
+function endPress(i){
+  const wrap = document.getElementById("wrap"+i);
+  wrap.classList.remove("pressing");
+
+  if(!pressState[i]) return;
+
+  const wasLongPressed = pressState[i].longPressed;
+  clearInterval(pressState[i].progressTimer);
+  clearTimeout(pressState[i].longTimer);
+  delete pressState[i];
+  clearHoldProgress(i);
+
+  if(!wasLongPressed){
+    toggleTimer(i);
+  }
+}
+
+function cancelPress(i){
+  const wrap = document.getElementById("wrap"+i);
+  wrap.classList.remove("pressing");
+  if(!pressState[i]) return;
+  clearInterval(pressState[i].progressTimer);
+  clearTimeout(pressState[i].longTimer);
+  delete pressState[i];
+  clearHoldProgress(i);
+}
+
+function clearPress(i){
+  if(pressState[i]){
+    clearInterval(pressState[i].progressTimer);
+    clearTimeout(pressState[i].longTimer);
+    delete pressState[i];
+  }
+  clearHoldProgress(i);
+}
+
+document.querySelectorAll('.timer-box').forEach(el=>{
+  const i = Number(el.dataset.index);
+
+  el.addEventListener('touchstart', ()=>{
+    startPress(i);
+  }, {passive:true});
+
+  el.addEventListener('touchend', ()=>{
+    endPress(i);
+  });
+
+  el.addEventListener('touchcancel', ()=>{
+    cancelPress(i);
+  });
+
+  el.addEventListener('mousedown', ()=>{
+    startPress(i);
+  });
+
+  el.addEventListener('mouseup', ()=>{
+    endPress(i);
+  });
+
+  el.addEventListener('mouseleave', ()=>{
+    cancelPress(i);
+  });
+});
+
 setInterval(()=>{
-
   timers.forEach((t,i)=>{
-
     if(!t.run) return;
 
     t.time--;
 
-    if(t.time <=0){
+    if(t.time <= 0){
       t.time = t.max;
     }
 
     render(i);
-
   });
-
 },1000);
 
-timers.forEach((_,i)=>render(i));
+timers.forEach((_,i)=>{
+  render(i);
+  clearHoldProgress(i);
+});
 </script>
 
 </body>
