@@ -73,6 +73,7 @@ font-size:16px;
 
 <div class="container">
 
+<!-- 時鐘 -->
 <div onclick="toggleTimer(0)">
 <div class="timer">
 <svg width="140" height="140">
@@ -81,20 +82,22 @@ font-size:16px;
 </svg>
 <div id="t0" class="time">10</div>
 </div>
-<div class="label">時鐘</div>
+<div class="label">時鐘（89%）</div>
 </div>
 
+<!-- 小怪 -->
 <div onclick="toggleTimer(1)">
 <div class="timer">
 <svg width="140" height="140">
 <circle class="bg" cx="70" cy="70" r="60"/>
 <circle id="c1" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
 </svg>
-<div id="t1" class="time">70</div>
+<div id="t1" class="time">50</div>
 </div>
-<div class="label">黑水</div>
+<div class="label">小怪（84%）</div>
 </div>
 
+<!-- 玩家炸彈 -->
 <div onclick="toggleTimer(2)">
 <div class="timer">
 <svg width="140" height="140">
@@ -103,29 +106,31 @@ font-size:16px;
 </svg>
 <div id="t2" class="time">30</div>
 </div>
-<div class="label">玩家炸彈</div>
+<div class="label">玩家炸彈（84%）</div>
 </div>
 
+<!-- 反盾 -->
 <div onclick="toggleTimer(3)">
 <div class="timer">
 <svg width="140" height="140">
 <circle class="bg" cx="70" cy="70" r="60"/>
 <circle id="c3" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
 </svg>
-<div id="t3" class="time">50</div>
+<div id="t3" class="time">120</div>
 </div>
-<div class="label">小怪</div>
+<div class="label">反盾（84%）</div>
 </div>
 
+<!-- 黑水 -->
 <div onclick="toggleTimer(4)">
 <div class="timer">
 <svg width="140" height="140">
 <circle class="bg" cx="70" cy="70" r="60"/>
 <circle id="c4" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
 </svg>
-<div id="t4" class="time">120</div>
+<div id="t4" class="time">70</div>
 </div>
-<div class="label">反盾</div>
+<div class="label">黑水（69%）</div>
 </div>
 
 </div>
@@ -134,10 +139,10 @@ font-size:16px;
 
 const timers=[
 {max:10,time:10,run:false},
-{max:70,time:70,run:false},
-{max:30,time:30,run:false},
 {max:50,time:50,run:false},
-{max:120,time:120,run:false}
+{max:30,time:30,run:false},
+{max:120,time:120,run:false},
+{max:70,time:70,run:false}
 ]
 
 function toggleTimer(i){
