@@ -3,176 +3,203 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>困難拉圖斯計時</title>
-
 <style>
-
 body{
-background:#0b0f1a;
-color:white;
-font-family:sans-serif;
-text-align:center;
+  margin:0;
+  background:#061226;
+  color:white;
+  font-family:sans-serif;
+  text-align:center;
 }
 
 h2{
-margin-top:30px;
+  margin:20px 0 10px;
+  font-size:28px;
 }
 
 .container{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:40px;
-padding:40px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px 12px;
+  padding:20px 12px 30px;
+  justify-items:center;
+}
+
+.item{
+  width:100%;
 }
 
 .timer{
-position:relative;
-width:140px;
-height:140px;
-margin:auto;
+  position:relative;
+  width:120px;
+  height:120px;
+  margin:auto;
 }
 
 svg{
-transform:rotate(-90deg);
+  transform:rotate(-90deg);
 }
 
 circle{
-fill:none;
-stroke-width:10;
+  fill:none;
+  stroke-width:10;
 }
 
 .bg{
-stroke:#333;
+  stroke:#2a2a2a;
 }
 
 .progress{
-stroke:#4da3ff;
-stroke-linecap:round;
-transition:stroke-dashoffset 1s linear;
+  stroke:#4da3ff;
+  stroke-linecap:round;
+  transition:stroke-dashoffset 1s linear;
 }
 
 .time{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:28px;
-font-weight:bold;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:24px;
+  font-weight:bold;
 }
 
 .label{
-margin-top:10px;
-font-size:16px;
+  margin-top:8px;
+  font-size:15px;
+  white-space:nowrap;
 }
 
+/* 手機橫向：5個由左到右排一列 */
+@media (orientation: landscape){
+  h2{
+    font-size:22px;
+    margin:14px 0 6px;
+  }
+
+  .container{
+    grid-template-columns:repeat(5, 1fr);
+    gap:10px;
+    padding:12px 8px 20px;
+    align-items:start;
+  }
+
+  .timer{
+    width:92px;
+    height:92px;
+  }
+
+  svg{
+    width:92px;
+    height:92px;
+  }
+
+  .time{
+    font-size:18px;
+  }
+
+  .label{
+    font-size:12px;
+    margin-top:6px;
+  }
+}
 </style>
 </head>
-
 <body>
 
 <h2>困難拉圖斯計時</h2>
 
 <div class="container">
 
-<!-- 時鐘 -->
-<div onclick="toggleTimer(0)">
-<div class="timer">
-<svg width="140" height="140">
-<circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c0" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
-</svg>
-<div id="t0" class="time">10</div>
-</div>
-<div class="label">時鐘（89%）</div>
-</div>
+  <div class="item" onclick="toggleTimer(0)">
+    <div class="timer">
+      <svg width="120" height="120">
+        <circle class="bg" cx="60" cy="60" r="50"/>
+        <circle id="c0" class="progress" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="0"/>
+      </svg>
+      <div id="t0" class="time">10</div>
+    </div>
+    <div class="label">時鐘（89%）</div>
+  </div>
 
-<!-- 小怪 -->
-<div onclick="toggleTimer(1)">
-<div class="timer">
-<svg width="140" height="140">
-<circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c1" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
-</svg>
-<div id="t1" class="time">50</div>
-</div>
-<div class="label">小怪（84%）</div>
-</div>
+  <div class="item" onclick="toggleTimer(1)">
+    <div class="timer">
+      <svg width="120" height="120">
+        <circle class="bg" cx="60" cy="60" r="50"/>
+        <circle id="c1" class="progress" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="0"/>
+      </svg>
+      <div id="t1" class="time">50</div>
+    </div>
+    <div class="label">小怪（84%）</div>
+  </div>
 
-<!-- 玩家炸彈 -->
-<div onclick="toggleTimer(2)">
-<div class="timer">
-<svg width="140" height="140">
-<circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c2" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
-</svg>
-<div id="t2" class="time">30</div>
-</div>
-<div class="label">玩家炸彈（84%）</div>
-</div>
+  <div class="item" onclick="toggleTimer(2)">
+    <div class="timer">
+      <svg width="120" height="120">
+        <circle class="bg" cx="60" cy="60" r="50"/>
+        <circle id="c2" class="progress" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="0"/>
+      </svg>
+      <div id="t2" class="time">30</div>
+    </div>
+    <div class="label">玩家炸彈（84%）</div>
+  </div>
 
-<!-- 反盾 -->
-<div onclick="toggleTimer(3)">
-<div class="timer">
-<svg width="140" height="140">
-<circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c3" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
-</svg>
-<div id="t3" class="time">120</div>
-</div>
-<div class="label">反盾（84%）</div>
-</div>
+  <div class="item" onclick="toggleTimer(3)">
+    <div class="timer">
+      <svg width="120" height="120">
+        <circle class="bg" cx="60" cy="60" r="50"/>
+        <circle id="c3" class="progress" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="0"/>
+      </svg>
+      <div id="t3" class="time">120</div>
+    </div>
+    <div class="label">反盾（84%）</div>
+  </div>
 
-<!-- 黑水 -->
-<div onclick="toggleTimer(4)">
-<div class="timer">
-<svg width="140" height="140">
-<circle class="bg" cx="70" cy="70" r="60"/>
-<circle id="c4" class="progress" cx="70" cy="70" r="60" stroke-dasharray="377"/>
-</svg>
-<div id="t4" class="time">70</div>
-</div>
-<div class="label">黑水（69%）</div>
-</div>
+  <div class="item" onclick="toggleTimer(4)">
+    <div class="timer">
+      <svg width="120" height="120">
+        <circle class="bg" cx="60" cy="60" r="50"/>
+        <circle id="c4" class="progress" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="0"/>
+      </svg>
+      <div id="t4" class="time">70</div>
+    </div>
+    <div class="label">黑水（69%）</div>
+  </div>
 
 </div>
 
 <script>
+const CIRCUMFERENCE = 314;
 
-const timers=[
-{max:10,time:10,run:false},
-{max:50,time:50,run:false},
-{max:30,time:30,run:false},
-{max:120,time:120,run:false},
-{max:70,time:70,run:false}
-]
+const timers = [
+  {max:10,time:10,run:false},
+  {max:50,time:50,run:false},
+  {max:30,time:30,run:false},
+  {max:120,time:120,run:false},
+  {max:70,time:70,run:false}
+];
 
 function toggleTimer(i){
-timers[i].run=!timers[i].run
+  timers[i].run = !timers[i].run;
 }
 
 setInterval(()=>{
+  timers.forEach((t,i)=>{
+    if(!t.run) return;
 
-timers.forEach((t,i)=>{
+    t.time--;
 
-if(!t.run)return
+    if(t.time <= 0){
+      t.time = t.max;
+    }
 
-t.time--
+    document.getElementById("t"+i).innerText = t.time;
 
-if(t.time<=0){
-t.time=t.max
-}
-
-document.getElementById("t"+i).innerText=t.time
-
-let percent=t.time/t.max
-let offset=377*(1-percent)
-
-document.getElementById("c"+i)
-.style.strokeDashoffset=offset
-
-})
-
-},1000)
-
+    const percent = t.time / t.max;
+    const offset = CIRCUMFERENCE * (1 - percent);
+    document.getElementById("c"+i).style.strokeDashoffset = offset;
+  });
+},1000);
 </script>
 
 </body>
