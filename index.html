@@ -91,6 +91,7 @@ button.primary{
 
 .timer-box{
   display:block;
+  touch-action:manipulation;
 }
 
 .timer{
@@ -237,7 +238,6 @@ circle{
 <div class="layout">
 
   <div class="row top">
-
     <div class="item">
       <div class="timer-box" data-index="0">
         <div class="timer" id="wrap0">
@@ -267,11 +267,9 @@ circle{
         <div class="label">黑水（69%）</div>
       </div>
     </div>
-
   </div>
 
   <div class="row bottom">
-
     <div class="item">
       <div class="timer-box" data-index="1">
         <div class="timer" id="wrap1">
@@ -320,11 +318,9 @@ circle{
         <div class="label">反盾（84%）</div>
       </div>
     </div>
-
   </div>
 
   <div class="hint">點一下：開始 / 暫停　　長壓 2 秒：個別重置</div>
-
 </div>
 
 <script>
@@ -371,23 +367,22 @@ function render(i){
   const percent = t.time / t.max;
   const offset = CIRCUMFERENCE * (1 - percent);
 
-  document.getElementById("c"+i).style.strokeDashoffset = offset;
+  document.getElementById("c" + i).style.strokeDashoffset = offset;
 
-  const wrap = document.getElementById("wrap"+i);
-  const text = document.getElementById("t"+i);
+  const wrap = document.getElementById("wrap" + i);
+  const text = document.getElementById("t" + i);
 
-  wrap.classList.remove("red","flash");
+  wrap.classList.remove("red", "flash");
   text.innerText = t.time;
 
-  if(t.warn && t.time <= 10 && t.run){
-    wrap.classList.add("red","flash");
+  if (t.warn && t.time <= 10 && t.run) {
+    wrap.classList.add("red", "flash");
   }
 }
 
 function setHoldProgress(i, ratio){
-  const clamped = Math.max(0, Math.min(1, ratio));
-  const offset = HOLD_CIRCUMFERENCE * (1 - clamped);
-  document.getElementById("hold"+i).style.strokeDashoffset = offset;
+  const offset = HOLD_CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, ratio)));
+  document.getElementById("hold" + i).style.strokeDashoffset = offset;
 }
 
 function clearHoldProgress(i){
@@ -395,115 +390,104 @@ function clearHoldProgress(i){
 }
 
 function startPress(i){
-  clearPress(i);
+  cancelPress(i);
 
-  const wrap = document.getElementById("wrap"+i);
+  const wrap = document.getElementById("wrap" + i);
   wrap.classList.add("pressing");
   setHoldProgress(i, 0);
 
   const startedAt = Date.now();
 
-  const progressTimer = setInterval(()=>{
+  const progressTimer = setInterval(() => {
     const elapsed = Date.now() - startedAt;
     setHoldProgress(i, elapsed / LONG_PRESS_MS);
   }, 16);
 
-  const longTimer = setTimeout(()=>{
+  const longTimer = setTimeout(() => {
     if (!pressState[i]) return;
     pressState[i].longPressed = true;
     clearInterval(progressTimer);
     setHoldProgress(i, 1);
     wrap.classList.remove("pressing");
     resetTimer(i);
-    setTimeout(()=>clearHoldProgress(i), 120);
+    setTimeout(() => clearHoldProgress(i), 150);
   }, LONG_PRESS_MS);
 
   pressState[i] = {
-    longPressed:false,
+    longPressed: false,
     progressTimer,
-    longTimer
+    longTimer,
+    moved: false
   };
 }
 
-function endPress(i){
-  const wrap = document.getElementById("wrap"+i);
+function finishPress(i){
+  const state = pressState[i];
+  const wrap = document.getElementById("wrap" + i);
   wrap.classList.remove("pressing");
 
-  if(!pressState[i]) return;
+  if (!state) return;
 
-  const wasLongPressed = pressState[i].longPressed;
-  clearInterval(pressState[i].progressTimer);
-  clearTimeout(pressState[i].longTimer);
+  clearInterval(state.progressTimer);
+  clearTimeout(state.longTimer);
   delete pressState[i];
+
+  const shouldToggle = !state.longPressed && !state.moved;
   clearHoldProgress(i);
 
-  if(!wasLongPressed){
+  if (shouldToggle) {
     toggleTimer(i);
   }
 }
 
 function cancelPress(i){
-  const wrap = document.getElementById("wrap"+i);
+  const state = pressState[i];
+  const wrap = document.getElementById("wrap" + i);
   wrap.classList.remove("pressing");
-  if(!pressState[i]) return;
-  clearInterval(pressState[i].progressTimer);
-  clearTimeout(pressState[i].longTimer);
+
+  if (!state) return;
+
+  clearInterval(state.progressTimer);
+  clearTimeout(state.longTimer);
   delete pressState[i];
   clearHoldProgress(i);
 }
 
-function clearPress(i){
-  if(pressState[i]){
-    clearInterval(pressState[i].progressTimer);
-    clearTimeout(pressState[i].longTimer);
-    delete pressState[i];
-  }
-  clearHoldProgress(i);
-}
-
-document.querySelectorAll('.timer-box').forEach(el=>{
+document.querySelectorAll(".timer-box").forEach(el => {
   const i = Number(el.dataset.index);
 
-  el.addEventListener('touchstart', ()=>{
+  el.addEventListener("pointerdown", (e) => {
     startPress(i);
-  }, {passive:true});
-
-  el.addEventListener('touchend', ()=>{
-    endPress(i);
   });
 
-  el.addEventListener('touchcancel', ()=>{
+  el.addEventListener("pointerup", (e) => {
+    finishPress(i);
+  });
+
+  el.addEventListener("pointercancel", (e) => {
     cancelPress(i);
   });
 
-  el.addEventListener('mousedown', ()=>{
-    startPress(i);
-  });
-
-  el.addEventListener('mouseup', ()=>{
-    endPress(i);
-  });
-
-  el.addEventListener('mouseleave', ()=>{
+  el.addEventListener("pointerleave", (e) => {
     cancelPress(i);
   });
 });
 
-setInterval(()=>{
-  timers.forEach((t,i)=>{
-    if(!t.run) return;
+setInterval(() => {
+  timers.forEach((t, i) => {
+    if (!t.run) return;
 
     t.time--;
 
-    if(t.time <= 0){
+    if (t.time <= 0) {
       t.time = t.max;
     }
 
     render(i);
   });
-},1000);
+}, 1000);
 
-timers.forEach((_,i)=>{
+timers.forEach((_, i) => {
   render(i);
   clearHoldProgress(i);
 });
