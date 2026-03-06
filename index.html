@@ -32,7 +32,7 @@ h1{
   font-weight:800;
 }
 
-.controls{
+.top-controls{
   display:flex;
   justify-content:center;
   gap:10px;
@@ -125,6 +125,10 @@ circle{
   white-space:nowrap;
 }
 
+.action-under{
+  margin-top:10px;
+}
+
 .red .progress{
   stroke:var(--red);
 }
@@ -153,7 +157,7 @@ circle{
     margin:10px 0 8px;
   }
 
-  .controls{
+  .top-controls{
     margin:4px 0 8px;
   }
 
@@ -188,6 +192,15 @@ circle{
     font-size:12px;
     margin-top:6px;
   }
+
+  button{
+    padding:8px 16px;
+    font-size:14px;
+  }
+
+  .action-under{
+    margin-top:8px;
+  }
 }
 </style>
 </head>
@@ -195,8 +208,7 @@ circle{
 
 <h1>困難拉圖斯計時</h1>
 
-<div class="controls">
-  <button class="primary" onclick="toggle84()">84%</button>
+<div class="top-controls">
   <button onclick="resetAll()">重置全部</button>
 </div>
 
@@ -219,7 +231,7 @@ circle{
           <circle class="bg" cx="50" cy="50" r="42"></circle>
           <circle id="c4" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
         </svg>
-        <div id="t4" class="time"></div>
+        <div id="t4" class="time">70</div>
       </div>
       <div class="label">黑水（69%）</div>
     </div>
@@ -232,20 +244,25 @@ circle{
           <circle class="bg" cx="50" cy="50" r="42"></circle>
           <circle id="c1" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
         </svg>
-        <div id="t1" class="time"></div>
+        <div id="t1" class="time">50</div>
       </div>
       <div class="label">小怪（84%）</div>
     </div>
 
-    <div class="item" onclick="toggleTimer(2)">
-      <div class="timer" id="wrap2">
-        <svg viewBox="0 0 100 100">
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c2" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t2" class="time"></div>
+    <div class="item">
+      <div onclick="toggleTimer(2)">
+        <div class="timer" id="wrap2">
+          <svg viewBox="0 0 100 100">
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c2" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t2" class="time">30</div>
+        </div>
+        <div class="label">玩家炸彈（84%）</div>
       </div>
-      <div class="label">玩家炸彈（84%）</div>
+      <div class="action-under">
+        <button class="primary" onclick="event.stopPropagation(); toggle84()">84%</button>
+      </div>
     </div>
 
     <div class="item" onclick="toggleTimer(3)">
@@ -254,7 +271,7 @@ circle{
           <circle class="bg" cx="50" cy="50" r="42"></circle>
           <circle id="c3" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
         </svg>
-        <div id="t3" class="time"></div>
+        <div id="t3" class="time">120</div>
       </div>
       <div class="label">反盾（84%）</div>
     </div>
@@ -265,11 +282,11 @@ circle{
 const CIRCUMFERENCE = 264;
 
 const timers = [
-  { max:10,  time:10,  run:false, warn:false, showAlways:true  }, // 時鐘
-  { max:50,  time:50,  run:false, warn:true,  showAlways:false }, // 小怪
-  { max:30,  time:30,  run:false, warn:true,  showAlways:false }, // 玩家炸彈
-  { max:120, time:120, run:false, warn:true,  showAlways:false }, // 反盾
-  { max:70,  time:70,  run:false, warn:true,  showAlways:false }  // 黑水
+  { max:10,  time:10,  run:false, warn:false }, // 時鐘
+  { max:50,  time:50,  run:false, warn:true  }, // 小怪
+  { max:30,  time:30,  run:false, warn:true  }, // 玩家炸彈
+  { max:120, time:120, run:false, warn:true  }, // 反盾
+  { max:70,  time:70,  run:false, warn:true  }  // 黑水
 ];
 
 function toggleTimer(i){
@@ -305,12 +322,7 @@ function renderTimer(i){
   const text = document.getElementById("t" + i);
 
   wrap.classList.remove("red", "flash");
-
-  if (t.showAlways) {
-    text.textContent = t.time;
-  } else {
-    text.textContent = t.time <= 20 ? t.time : "";
-  }
+  text.textContent = t.time;
 
   if (t.warn && t.time <= 10 && t.run) {
     wrap.classList.add("red", "flash");
