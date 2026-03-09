@@ -19,7 +19,6 @@
   --blue2:#2f7cf6;
   --red:#ff4d4f;
   --gray:#2f3b4a;
-  --hold:#ffd166;
 }
 
 *{
@@ -46,43 +45,26 @@ body{
 .page{
   width:100vw;
   height:100vh;
-  overflow:hidden;
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:8px 12px 12px;
-  position:relative;
+  padding:8px;
 }
 
 h1{
-  margin:4px 0 8px;
-  font-size:22px;
+  margin:6px 0;
+  font-size:20px;
   font-weight:800;
-  line-height:1.1;
-  flex:0 0 auto;
-}
-
-.top-controls{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin:0 0 8px;
-  flex-wrap:wrap;
-  flex:0 0 auto;
 }
 
 button{
   border:0;
   border-radius:999px;
   padding:10px 18px;
-  font-size:15px;
+  font-size:14px;
   font-weight:700;
-  color:#fff;
   background:#1f2d3d;
-}
-
-button.primary{
-  background:var(--blue2);
+  color:#fff;
 }
 
 .layout{
@@ -92,102 +74,76 @@ button.primary{
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  gap:12px;
-  min-height:0;
+  gap:10px;
 }
 
 .row{
   width:100%;
   display:grid;
   justify-items:center;
-  align-items:start;
 }
 
 .row.top{
   grid-template-columns:1fr 1fr;
-  width:min(76vw, 780px);
-  margin:0 auto;
 }
 
 .row.bottom{
   grid-template-columns:1fr 1fr 1fr;
-  width:min(96vw, 1080px);
-  margin:0 auto;
-}
-
-.item{
-  width:100%;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:flex-start;
-}
-
-.timer-box{
-  display:block;
-  touch-action:manipulation;
 }
 
 .timer{
   position:relative;
-  width:118px;
-  height:118px;
-  margin:0 auto;
+  width:140px;
+  height:140px;
+}
+
+.timer.small{
+  width:110px;
+  height:110px;
 }
 
 svg{
-  width:118px;
-  height:118px;
-  display:block;
+  width:100%;
+  height:100%;
   transform:rotate(-90deg);
   position:relative;
   z-index:2;
 }
 
-circle{
+.bg{
+  stroke:#2f3b4a;
+  stroke-width:10;
   fill:none;
 }
 
-.hold-track{
-  stroke:rgba(255,209,102,.18);
-  stroke-width:4;
-}
-
-.hold-progress{
-  stroke:var(--hold);
-  stroke-width:4;
-  stroke-linecap:round;
-  opacity:0;
-  transition:opacity .15s linear;
-}
-
-.pressing .hold-progress{
-  opacity:1;
-}
-
-.bg{
-  stroke:var(--gray);
-  stroke-width:10;
-}
-
 .progress{
-  stroke:var(--blue);
+  stroke:#57a5ff;
   stroke-width:10;
   stroke-linecap:round;
-  transition:stroke-dashoffset 1s linear, stroke .2s linear;
+  fill:none;
+  transition:stroke-dashoffset 1s linear;
 }
 
-.item.top-big .timer{
-  width:146px;
-  height:146px;
+.time{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:32px;
+  font-weight:800;
+  z-index:3;
 }
 
-.item.top-big svg{
-  width:146px;
-  height:146px;
+.small .time{
+  font-size:24px;
 }
 
-/* 圈內背景圖 */
+.label{
+  margin-top:4px;
+  font-size:13px;
+}
+
+/* 背景圖 */
 .timer::before{
   content:"";
   position:absolute;
@@ -195,10 +151,10 @@ circle{
   background-size:cover;
   background-repeat:no-repeat;
   background-position:center;
-  opacity:.45;
+  opacity:.5;
   border-radius:50%;
-  z-index:1;
   pointer-events:none;
+  z-index:1;
 }
 
 .clock-bg::before{
@@ -221,355 +177,147 @@ circle{
   background-image:url("IMG_1041.jpeg");
 }
 
-.time{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-weight:800;
-  line-height:1;
-  font-size:26px;
-  z-index:3;
-}
-
-.item.top-big .time{
-  font-size:32px;
-}
-
-.label{
-  margin-top:6px;
-  font-size:14px;
-  line-height:1.2;
-  white-space:nowrap;
-}
-
-.item.top-big .label{
-  font-size:15px;
-}
-
 .red .progress{
-  stroke:var(--red);
+  stroke:#ff4d4f;
 }
 
-.flash .progress{
-  animation:ringFlash .8s infinite;
+.flash{
+  animation:flash .8s infinite;
 }
 
-.flash .time{
-  animation:textFlash .8s infinite;
-}
-
-@keyframes ringFlash{
-  0%,100%{ stroke:var(--red); opacity:1; }
-  50%{ stroke:#ffb3b3; opacity:.55; }
-}
-
-@keyframes textFlash{
-  0%,100%{ color:#ff4d4f; opacity:1; }
-  50%{ color:#ffd6d6; opacity:.55; }
-}
-
-.fab84-row{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin-top:-2px;
-  flex:0 0 auto;
-}
-
-.fab84-rail{
-  position:relative;
-  min-width:220px;
-  height:46px;
-  padding:0 18px;
-  border-radius:999px;
-  background:linear-gradient(90deg, rgba(47,124,246,.15), rgba(87,165,255,.28), rgba(47,124,246,.15));
-  box-shadow:0 8px 24px rgba(0,0,0,.25);
-  display:flex;
-  align-items:center;
-  justify-content:center;
+@keyframes flash{
+  0%,100%{opacity:1;}
+  50%{opacity:.4;}
 }
 
 .fab84{
-  min-width:122px;
-  height:46px;
-  padding:0 28px;
+  margin-top:8px;
   border-radius:999px;
-  background:linear-gradient(180deg, #4b93ff, #2f7cf6);
-  color:#fff;
-  font-size:17px;
+  padding:12px 28px;
+  background:#2f7cf6;
+  font-size:18px;
   font-weight:800;
-  box-shadow:0 10px 24px rgba(47,124,246,.35);
 }
-
-.fab84:active{
-  transform:translateY(1px);
-}
-
-.fab84-side{
-  position:absolute;
-  width:16px;
-  height:16px;
-  border-radius:50%;
-  background:#ffd34d;
-  box-shadow:0 0 12px rgba(255,211,77,.5);
-  top:50%;
-  transform:translateY(-50%);
-  opacity:.95;
-}
-
-.fab84-side.left{ left:16px; }
-.fab84-side.right{ right:16px; }
 
 .hint{
-  margin-top:2px;
   font-size:10px;
-  color:rgba(255,255,255,.55);
-  line-height:1.3;
-  flex:0 0 auto;
-}
-
-@media (orientation: landscape){
-  .page{
-    padding:6px 10px calc(10px + env(safe-area-inset-bottom));
-  }
-
-  h1{
-    margin:2px 0 4px;
-    font-size:18px;
-  }
-
-  .top-controls{
-    margin:0 0 4px;
-  }
-
-  button{
-    padding:8px 16px;
-    font-size:13px;
-  }
-
-  .layout{
-    gap:8px;
-    padding-bottom:64px;
-  }
-
-  .row.top{
-    width:min(78vw, 860px);
-  }
-
-  .row.bottom{
-    width:min(96vw, 1080px);
-  }
-
-  .timer{
-    width:112px;
-    height:112px;
-  }
-
-  svg{
-    width:112px;
-    height:112px;
-  }
-
-  .time{
-    font-size:25px;
-  }
-
-  .item.top-big .timer{
-    width:154px;
-    height:154px;
-  }
-
-  .item.top-big svg{
-    width:154px;
-    height:154px;
-  }
-
-  .item.top-big .time{
-    font-size:34px;
-  }
-
-  .label{
-    margin-top:4px;
-    font-size:12px;
-  }
-
-  .item.top-big .label{
-    font-size:14px;
-  }
-
-  .fab84-row{
-    position:absolute;
-    left:50%;
-    bottom:calc(8px + env(safe-area-inset-bottom));
-    transform:translateX(-50%);
-    margin:0;
-    z-index:20;
-  }
-
-  .hint{
-    display:none;
-  }
-}
-
-@media (orientation: portrait){
-  .row.top,
-  .row.bottom{
-    width:100%;
-  }
-
-  .timer{
-    width:116px;
-    height:116px;
-  }
-
-  svg{
-    width:116px;
-    height:116px;
-  }
-
-  .time{
-    font-size:26px;
-  }
-
-  .item.top-big .timer{
-    width:132px;
-    height:132px;
-  }
-
-  .item.top-big svg{
-    width:132px;
-    height:132px;
-  }
-
-  .item.top-big .time{
-    font-size:30px;
-  }
+  opacity:.6;
 }
 </style>
 </head>
 
 <body>
+
 <div class="page">
 
-  <h1>困難拉圖斯計時</h1>
+<h1>困難拉圖斯計時</h1>
 
-  <div class="top-controls">
-    <button onclick="resetAll()">重置全部</button>
+<button onclick="resetAll()">重置全部</button>
+
+<div class="layout">
+
+  <div class="row top">
+
+    <div>
+      <div class="timer clock-bg" id="wrap0">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c0" class="progress" cx="50" cy="50" r="42"
+            stroke-dasharray="264"
+            stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t0" class="time">10</div>
+      </div>
+      <div class="label">時鐘（89%）</div>
+    </div>
+
+    <div>
+      <div class="timer blackwater-bg" id="wrap4">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c4" class="progress" cx="50" cy="50" r="42"
+            stroke-dasharray="264"
+            stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t4" class="time">70</div>
+      </div>
+      <div class="label">黑水（69%）</div>
+    </div>
+
   </div>
 
-  <div class="layout">
+  <div class="row bottom">
 
-    <div class="row top">
-      <div class="item top-big">
-        <div class="timer-box" data-index="0">
-          <div class="timer clock-bg" id="wrap0">
-            <svg viewBox="0 0 100 100">
-              <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-              <circle id="hold0" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
-              <circle class="bg" cx="50" cy="50" r="42"></circle>
-              <circle id="c0" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-            </svg>
-            <div id="t0" class="time">10</div>
-          </div>
-          <div class="label">時鐘（89%）</div>
-        </div>
+    <div>
+      <div class="timer small monster-bg" id="wrap1">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c1" class="progress" cx="50" cy="50" r="42"
+            stroke-dasharray="264"
+            stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t1" class="time">50</div>
       </div>
-
-      <div class="item top-big">
-        <div class="timer-box" data-index="4">
-          <div class="timer blackwater-bg" id="wrap4">
-            <svg viewBox="0 0 100 100">
-              <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-              <circle id="hold4" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
-              <circle class="bg" cx="50" cy="50" r="42"></circle>
-              <circle id="c4" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-            </svg>
-            <div id="t4" class="time">70</div>
-          </div>
-          <div class="label">黑水（69%）</div>
-        </div>
-      </div>
+      <div class="label">小怪（84%）</div>
     </div>
 
-    <div class="row bottom">
-      <div class="item">
-        <div class="timer-box" data-index="1">
-          <div class="timer monster-bg" id="wrap1">
-            <svg viewBox="0 0 100 100">
-              <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-              <circle id="hold1" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
-              <circle class="bg" cx="50" cy="50" r="42"></circle>
-              <circle id="c1" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-            </svg>
-            <div id="t1" class="time">50</div>
-          </div>
-          <div class="label">小怪（84%）</div>
-        </div>
+    <div>
+      <div class="timer small bomb-bg" id="wrap2">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c2" class="progress" cx="50" cy="50" r="42"
+            stroke-dasharray="264"
+            stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t2" class="time">35</div>
       </div>
-
-      <div class="item">
-        <div class="timer-box" data-index="2">
-          <div class="timer bomb-bg" id="wrap2">
-            <svg viewBox="0 0 100 100">
-              <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-              <circle id="hold2" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
-              <circle class="bg" cx="50" cy="50" r="42"></circle>
-              <circle id="c2" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-            </svg>
-            <div id="t2" class="time">35</div>
-          </div>
-          <div class="label">玩家炸彈（84%）</div>
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="timer-box" data-index="3">
-          <div class="timer shield-bg" id="wrap3">
-            <svg viewBox="0 0 100 100">
-              <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-              <circle id="hold3" class="hold-progress" cx="50" cy="50" r="47" stroke-dasharray="295" stroke-dashoffset="295"></circle>
-              <circle class="bg" cx="50" cy="50" r="42"></circle>
-              <circle id="c3" class="progress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="0"></circle>
-            </svg>
-            <div id="t3" class="time">120</div>
-          </div>
-          <div class="label">反盾（84%）</div>
-        </div>
-      </div>
+      <div class="label">玩家炸彈（84%）</div>
     </div>
 
-    <div class="fab84-row">
-      <div class="fab84-rail">
-        <span class="fab84-side left"></span>
-        <button class="fab84" onclick="toggle84()">84%</button>
-        <span class="fab84-side right"></span>
+    <div>
+      <div class="timer small shield-bg" id="wrap3">
+        <svg viewBox="0 0 100 100">
+          <circle class="bg" cx="50" cy="50" r="42"></circle>
+          <circle id="c3" class="progress" cx="50" cy="50" r="42"
+            stroke-dasharray="264"
+            stroke-dashoffset="0"></circle>
+        </svg>
+        <div id="t3" class="time">120</div>
       </div>
+      <div class="label">反盾（84%）</div>
     </div>
-
-    <div class="hint">點一下：開始 / 暫停　　長壓 2 秒：個別重置</div>
 
   </div>
+
+  <button class="fab84" id="btn84">84%</button>
+
+  <div class="hint">點一下：開始 / 暫停　長壓0.8秒：重置　長壓84%：重置三個84%</div>
+
+</div>
 </div>
 
 <script>
-const CIRCUMFERENCE = 264;
-const HOLD_CIRCUMFERENCE = 295;
-const LONG_PRESS_MS = 1000;
-  
+const CIRC = 264;
+const LONG_PRESS_MS = 800;
+
 const timers = [
-  { max:10,  time:10,  run:false, warn:false },
-  { max:50,  time:50,  run:false, warn:true  },
-  { max:35,  time:35,  run:false, warn:true  },
-  { max:120, time:120, run:false, warn:true  },
-  { max:70,  time:70,  run:false, warn:true  }
+  {max:10,  time:10,  run:false, warn:false}, // 時鐘
+  {max:50,  time:50,  run:false, warn:true }, // 小怪
+  {max:35,  time:35,  run:false, warn:true }, // 玩家炸彈
+  {max:120, time:120, run:false, warn:true }, // 反盾
+  {max:70,  time:70,  run:false, warn:true }  // 黑水
 ];
 
-const pressState = {};
+const timerPress = {};
+let press84 = null;
+let press84Triggered = false;
 
 function toggleTimer(i){
   timers[i].run = !timers[i].run;
+}
+
+function toggle84(){
+  [1,2,3].forEach(i => timers[i].run = true);
 }
 
 function resetTimer(i){
@@ -578,14 +326,12 @@ function resetTimer(i){
   render(i);
 }
 
-function toggle84(){
-  const group = [1,2,3];
-  const shouldRun = group.some(i => !timers[i].run);
-  group.forEach(i => timers[i].run = shouldRun);
+function reset84(){
+  [1,2,3].forEach(i => resetTimer(i));
 }
 
 function resetAll(){
-  timers.forEach((t, i)=>{
+  timers.forEach((t,i)=>{
     t.run = false;
     t.time = t.max;
     render(i);
@@ -595,120 +341,102 @@ function resetAll(){
 function render(i){
   const t = timers[i];
   const percent = t.time / t.max;
-  const offset = CIRCUMFERENCE * (1 - percent);
+  const offset = CIRC * (1 - percent);
 
-  document.getElementById("c" + i).style.strokeDashoffset = offset;
+  document.getElementById("c"+i).style.strokeDashoffset = offset;
 
-  const wrap = document.getElementById("wrap" + i);
-  const text = document.getElementById("t" + i);
+  const wrap = document.getElementById("wrap"+i);
+  wrap.classList.remove("red","flash");
 
-  wrap.classList.remove("red", "flash");
-  text.innerText = t.time;
+  document.getElementById("t"+i).innerText = t.time;
 
-  if (t.warn && t.time <= 10 && t.run) {
-    wrap.classList.add("red", "flash");
+  if(t.warn && t.time <= 10 && t.run){
+    wrap.classList.add("red","flash");
   }
 }
 
-function setHoldProgress(i, ratio){
-  const offset = HOLD_CIRCUMFERENCE * (1 - Math.max(0, Math.min(1, ratio)));
-  document.getElementById("hold" + i).style.strokeDashoffset = offset;
+function bindTimerPress(el, i){
+  el.addEventListener("pointerdown", () => {
+    timerPress[i] = {
+      fired:false,
+      id:setTimeout(() => {
+        timerPress[i].fired = true;
+        resetTimer(i);
+      }, LONG_PRESS_MS)
+    };
+  });
+
+  el.addEventListener("pointerup", () => {
+    if(!timerPress[i]) return;
+    clearTimeout(timerPress[i].id);
+    const fired = timerPress[i].fired;
+    delete timerPress[i];
+    if(!fired){
+      toggleTimer(i);
+    }
+  });
+
+  el.addEventListener("pointerleave", () => {
+    if(!timerPress[i]) return;
+    clearTimeout(timerPress[i].id);
+    delete timerPress[i];
+  });
+
+  el.addEventListener("pointercancel", () => {
+    if(!timerPress[i]) return;
+    clearTimeout(timerPress[i].id);
+    delete timerPress[i];
+  });
 }
 
-function clearHoldProgress(i){
-  setHoldProgress(i, 0);
-}
-
-function startPress(i){
-  cancelPress(i);
-
-  const wrap = document.getElementById("wrap" + i);
-  wrap.classList.add("pressing");
-  setHoldProgress(i, 0);
-
-  const startedAt = Date.now();
-
-  const progressTimer = setInterval(() => {
-    const elapsed = Date.now() - startedAt;
-    setHoldProgress(i, elapsed / LONG_PRESS_MS);
-  }, 16);
-
-  const longTimer = setTimeout(() => {
-    if (!pressState[i]) return;
-    pressState[i].longPressed = true;
-    clearInterval(progressTimer);
-    setHoldProgress(i, 1);
-    wrap.classList.remove("pressing");
-    resetTimer(i);
-    setTimeout(() => clearHoldProgress(i), 150);
-  }, LONG_PRESS_MS);
-
-  pressState[i] = {
-    longPressed: false,
-    progressTimer,
-    longTimer
-  };
-}
-
-function finishPress(i){
-  const state = pressState[i];
-  const wrap = document.getElementById("wrap" + i);
-  wrap.classList.remove("pressing");
-
-  if (!state) return;
-
-  clearInterval(state.progressTimer);
-  clearTimeout(state.longTimer);
-  delete pressState[i];
-
-  const shouldToggle = !state.longPressed;
-  clearHoldProgress(i);
-
-  if (shouldToggle) {
-    toggleTimer(i);
-  }
-}
-
-function cancelPress(i){
-  const state = pressState[i];
-  const wrap = document.getElementById("wrap" + i);
-  wrap.classList.remove("pressing");
-
-  if (!state) return;
-
-  clearInterval(state.progressTimer);
-  clearTimeout(state.longTimer);
-  delete pressState[i];
-  clearHoldProgress(i);
-}
-
-document.querySelectorAll(".timer-box").forEach(el => {
-  const i = Number(el.dataset.index);
-
-  el.addEventListener("pointerdown", () => startPress(i));
-  el.addEventListener("pointerup", () => finishPress(i));
-  el.addEventListener("pointercancel", () => cancelPress(i));
-  el.addEventListener("pointerleave", () => cancelPress(i));
+document.querySelectorAll(".timer").forEach((el,i)=>{
+  bindTimerPress(el, i);
 });
 
-setInterval(() => {
-  timers.forEach((t, i) => {
-    if (!t.run) return;
+const btn84 = document.getElementById("btn84");
 
+btn84.addEventListener("pointerdown", () => {
+  press84Triggered = false;
+  press84 = setTimeout(() => {
+    press84Triggered = true;
+    reset84();
+  }, LONG_PRESS_MS);
+});
+
+btn84.addEventListener("pointerup", () => {
+  if(press84){
+    clearTimeout(press84);
+    press84 = null;
+  }
+  if(!press84Triggered){
+    toggle84();
+  }
+});
+
+btn84.addEventListener("pointerleave", () => {
+  if(press84){
+    clearTimeout(press84);
+    press84 = null;
+  }
+});
+
+btn84.addEventListener("pointercancel", () => {
+  if(press84){
+    clearTimeout(press84);
+    press84 = null;
+  }
+});
+
+setInterval(()=>{
+  timers.forEach((t,i)=>{
+    if(!t.run) return;
     t.time--;
-
-    if (t.time <= 0) {
-      t.time = t.max;
-    }
-
+    if(t.time <= 0) t.time = t.max;
     render(i);
   });
 }, 1000);
 
-timers.forEach((_, i) => {
-  render(i);
-  clearHoldProgress(i);
-});
+timers.forEach((t,i)=>render(i));
 </script>
 
 </body>
