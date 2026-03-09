@@ -46,16 +46,29 @@ body{
 .page{
   width:100vw;
   height:100vh;
+  overflow:hidden;
   display:flex;
   flex-direction:column;
   align-items:center;
-  padding:8px;
+  padding:8px 10px calc(10px + env(safe-area-inset-bottom));
+  position:relative;
 }
 
 h1{
-  margin:6px 0;
+  margin:4px 0 6px;
   font-size:20px;
   font-weight:800;
+  line-height:1.1;
+  flex:0 0 auto;
+}
+
+.top-controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:0 0 6px;
+  flex-wrap:wrap;
+  flex:0 0 auto;
 }
 
 button{
@@ -71,6 +84,7 @@ button{
 .layout{
   width:100%;
   flex:1;
+  min-height:0;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -82,6 +96,7 @@ button{
   width:100%;
   display:grid;
   justify-items:center;
+  align-items:start;
 }
 
 .row.top{
@@ -100,13 +115,13 @@ button{
 
 .timer{
   position:relative;
-  width:140px;
-  height:140px;
+  width:138px;
+  height:138px;
 }
 
 .timer.small{
-  width:110px;
-  height:110px;
+  width:108px;
+  height:108px;
 }
 
 svg{
@@ -131,7 +146,6 @@ svg{
   transition:stroke-dashoffset 1s linear;
 }
 
-/* 長壓黃圈 */
 .hold-track{
   stroke:rgba(255,209,102,.18);
   stroke-width:4;
@@ -156,18 +170,20 @@ svg{
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:32px;
+  font-size:30px;
   font-weight:800;
   z-index:3;
 }
 
 .small .time{
-  font-size:24px;
+  font-size:22px;
 }
 
 .label{
   margin-top:4px;
   font-size:13px;
+  line-height:1.2;
+  white-space:nowrap;
 }
 
 /* 背景圖 */
@@ -218,9 +234,9 @@ svg{
 }
 
 .fab84{
-  margin-top:8px;
+  margin-top:6px;
   border-radius:999px;
-  padding:12px 28px;
+  padding:11px 26px;
   background:#2f7cf6;
   font-size:18px;
   font-weight:800;
@@ -229,118 +245,223 @@ svg{
 .hint{
   font-size:10px;
   opacity:.6;
+  margin-top:2px;
+}
+
+/* 橫置最重要的修正 */
+@media (orientation: landscape){
+  .page{
+    padding:4px 8px calc(6px + env(safe-area-inset-bottom));
+  }
+
+  h1{
+    margin:2px 0 4px;
+    font-size:18px;
+  }
+
+  .top-controls{
+    margin:0 0 4px;
+  }
+
+  button{
+    padding:8px 14px;
+    font-size:12px;
+  }
+
+  .layout{
+    gap:6px;
+    padding-bottom:50px; /* 預留給 84% 按鈕 */
+  }
+
+  .timer{
+    width:124px;
+    height:124px;
+  }
+
+  .timer.small{
+    width:92px;
+    height:92px;
+  }
+
+  .time{
+    font-size:28px;
+  }
+
+  .small .time{
+    font-size:18px;
+  }
+
+  .label{
+    margin-top:2px;
+    font-size:11px;
+  }
+
+  .fab84{
+    position:absolute;
+    left:50%;
+    bottom:calc(4px + env(safe-area-inset-bottom));
+    transform:translateX(-50%);
+    margin-top:0;
+    padding:10px 24px;
+    font-size:17px;
+    z-index:20;
+  }
+
+  .hint{
+    display:none;
+  }
+}
+
+/* 很窄但很高的情況微調 */
+@media (max-height: 430px) and (orientation: landscape){
+  h1{
+    font-size:16px;
+    margin:1px 0 3px;
+  }
+
+  .timer{
+    width:114px;
+    height:114px;
+  }
+
+  .timer.small{
+    width:84px;
+    height:84px;
+  }
+
+  .time{
+    font-size:24px;
+  }
+
+  .small .time{
+    font-size:16px;
+  }
+
+  .label{
+    font-size:10px;
+  }
+
+  .layout{
+    padding-bottom:46px;
+  }
+
+  .fab84{
+    padding:8px 22px;
+    font-size:16px;
+  }
 }
 </style>
 </head>
 
 <body>
-
 <div class="page">
 
-<h1>困難拉圖斯計時</h1>
+  <h1>困難拉圖斯計時</h1>
 
-<button onclick="resetAll()">重置全部</button>
-
-<div class="layout">
-
-  <div class="row top">
-
-    <div class="item">
-      <div class="timer clock-bg" id="wrap0" data-index="0">
-        <svg viewBox="0 0 100 100">
-          <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-          <circle id="hold0" class="hold-progress" cx="50" cy="50" r="47"
-            stroke-dasharray="295"
-            stroke-dashoffset="295"></circle>
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c0" class="progress" cx="50" cy="50" r="42"
-            stroke-dasharray="264"
-            stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t0" class="time">10</div>
-      </div>
-      <div class="label">時鐘（89%）</div>
-    </div>
-
-    <div class="item">
-      <div class="timer blackwater-bg" id="wrap4" data-index="4">
-        <svg viewBox="0 0 100 100">
-          <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-          <circle id="hold4" class="hold-progress" cx="50" cy="50" r="47"
-            stroke-dasharray="295"
-            stroke-dashoffset="295"></circle>
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c4" class="progress" cx="50" cy="50" r="42"
-            stroke-dasharray="264"
-            stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t4" class="time">70</div>
-      </div>
-      <div class="label">黑水（69%）</div>
-    </div>
-
+  <div class="top-controls">
+    <button onclick="resetAll()">重置全部</button>
   </div>
 
-  <div class="row bottom">
+  <div class="layout">
 
-    <div class="item">
-      <div class="timer small monster-bg" id="wrap1" data-index="1">
-        <svg viewBox="0 0 100 100">
-          <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-          <circle id="hold1" class="hold-progress" cx="50" cy="50" r="47"
-            stroke-dasharray="295"
-            stroke-dashoffset="295"></circle>
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c1" class="progress" cx="50" cy="50" r="42"
-            stroke-dasharray="264"
-            stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t1" class="time">50</div>
+    <div class="row top">
+
+      <div class="item">
+        <div class="timer clock-bg" id="wrap0" data-index="0">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold0" class="hold-progress" cx="50" cy="50" r="47"
+              stroke-dasharray="295"
+              stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c0" class="progress" cx="50" cy="50" r="42"
+              stroke-dasharray="264"
+              stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t0" class="time">10</div>
+        </div>
+        <div class="label">時鐘（89%）</div>
       </div>
-      <div class="label">小怪（84%）</div>
+
+      <div class="item">
+        <div class="timer blackwater-bg" id="wrap4" data-index="4">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold4" class="hold-progress" cx="50" cy="50" r="47"
+              stroke-dasharray="295"
+              stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c4" class="progress" cx="50" cy="50" r="42"
+              stroke-dasharray="264"
+              stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t4" class="time">70</div>
+        </div>
+        <div class="label">黑水（69%）</div>
+      </div>
+
     </div>
 
-    <div class="item">
-      <div class="timer small bomb-bg" id="wrap2" data-index="2">
-        <svg viewBox="0 0 100 100">
-          <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-          <circle id="hold2" class="hold-progress" cx="50" cy="50" r="47"
-            stroke-dasharray="295"
-            stroke-dashoffset="295"></circle>
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c2" class="progress" cx="50" cy="50" r="42"
-            stroke-dasharray="264"
-            stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t2" class="time">35</div>
+    <div class="row bottom">
+
+      <div class="item">
+        <div class="timer small monster-bg" id="wrap1" data-index="1">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold1" class="hold-progress" cx="50" cy="50" r="47"
+              stroke-dasharray="295"
+              stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c1" class="progress" cx="50" cy="50" r="42"
+              stroke-dasharray="264"
+              stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t1" class="time">50</div>
+        </div>
+        <div class="label">小怪（84%）</div>
       </div>
-      <div class="label">玩家炸彈（84%）</div>
+
+      <div class="item">
+        <div class="timer small bomb-bg" id="wrap2" data-index="2">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold2" class="hold-progress" cx="50" cy="50" r="47"
+              stroke-dasharray="295"
+              stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c2" class="progress" cx="50" cy="50" r="42"
+              stroke-dasharray="264"
+              stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t2" class="time">35</div>
+        </div>
+        <div class="label">玩家炸彈（84%）</div>
+      </div>
+
+      <div class="item">
+        <div class="timer small shield-bg" id="wrap3" data-index="3">
+          <svg viewBox="0 0 100 100">
+            <circle class="hold-track" cx="50" cy="50" r="47"></circle>
+            <circle id="hold3" class="hold-progress" cx="50" cy="50" r="47"
+              stroke-dasharray="295"
+              stroke-dashoffset="295"></circle>
+            <circle class="bg" cx="50" cy="50" r="42"></circle>
+            <circle id="c3" class="progress" cx="50" cy="50" r="42"
+              stroke-dasharray="264"
+              stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="t3" class="time">120</div>
+        </div>
+        <div class="label">反盾（84%）</div>
+      </div>
+
     </div>
 
-    <div class="item">
-      <div class="timer small shield-bg" id="wrap3" data-index="3">
-        <svg viewBox="0 0 100 100">
-          <circle class="hold-track" cx="50" cy="50" r="47"></circle>
-          <circle id="hold3" class="hold-progress" cx="50" cy="50" r="47"
-            stroke-dasharray="295"
-            stroke-dashoffset="295"></circle>
-          <circle class="bg" cx="50" cy="50" r="42"></circle>
-          <circle id="c3" class="progress" cx="50" cy="50" r="42"
-            stroke-dasharray="264"
-            stroke-dashoffset="0"></circle>
-        </svg>
-        <div id="t3" class="time">120</div>
-      </div>
-      <div class="label">反盾（84%）</div>
-    </div>
+    <button class="fab84" id="btn84">84%</button>
+
+    <div class="hint">點一下：開始 / 暫停　長壓0.8秒：重置　長壓84%：重置三個84%</div>
 
   </div>
-
-  <button class="fab84" id="btn84">84%</button>
-
-  <div class="hint">點一下：開始 / 暫停　長壓0.8秒：重置　長壓84%：重置三個84%</div>
-
-</div>
 </div>
 
 <script>
@@ -349,11 +470,11 @@ const HOLD_CIRC = 295;
 const LONG_PRESS_MS = 800;
 
 const timers = [
-  {max:10,  time:10,  run:false, warn:false}, // 時鐘
-  {max:50,  time:50,  run:false, warn:true }, // 小怪
-  {max:35,  time:35,  run:false, warn:true }, // 玩家炸彈
-  {max:120, time:120, run:false, warn:true }, // 反盾
-  {max:70,  time:70,  run:false, warn:true }  // 黑水
+  {max:10,  time:10,  run:false, warn:false},
+  {max:50,  time:50,  run:false, warn:true },
+  {max:35,  time:35,  run:false, warn:true },
+  {max:120, time:120, run:false, warn:true },
+  {max:70,  time:70,  run:false, warn:true }
 ];
 
 const timerPress = {};
